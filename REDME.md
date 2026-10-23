@@ -1,2 +1,2 @@
 # The Sample Code
-Method two of push code
+Method two of push code.
