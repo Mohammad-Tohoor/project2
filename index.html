@@ -5,9 +5,155 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample Code</title>
 </head>
+<style>
+    body{
+        text-align:center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .d{
+        height: 200px;
+        width: 200px;
+        background-color:gray;
+        margin: 15px;
+        line-height:200px;
+        border-radius: 10px;
+        border: 5px solid black;
+    }
+    .container{
+    border: 2px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 600px;
+    }
+    .Green{
+        background-color: #03f903;
+    }
+    .Yellow{
+        background-color: rgb(241, 241, 16);
+    }
+    .Blue{
+        background-color: rgb(6, 6, 212);
+    }
+    .Orange{
+        background-color:rgb(255, 166, 0);
+    }
+    .flash{
+        background-color:rgb(12, 12, 12);
+    }
+    .userflash{
+        background-color:rgb(64, 64, 64);
+    }
+
+</style>
 <body>
-    <h1>
-        hello world
-    </h1>
+    <h1>Simon Game</h1>
+    <h3>Play Game</h3>
+
+    <div class="container">
+        <div class="Green d" id="Green">Green</div>
+        <div class="Yellow d" id="Yellow">Yellow</div>
+        <div class="Blue d" id="Blue">Blue</div>
+        <div class="Orange d" id="Orange">Orange</div>
+    </div>
+    
 </body>
+<script>
+    let alld = document.querySelectorAll('.d')
+    let h3 = document.querySelector('h3')
+    let colorArray = ['Green','Yellow','Blue','Orange']
+    let gameSeq = []
+    let userSeq = []
+    let start = true
+    let level = 0
+    
+    document.addEventListener('keydown',function(){
+        if (start === true) {
+            levelUP()
+            start = false
+        }
+        
+    });
+    function reset(){
+        gameSeq = []
+        userSeq = []
+        level = 0
+        start = true
+    }
+    function levelUP(){
+        userSeq = []
+        level++
+        h3.innerText = `Your level ${level}`
+        let randomNum = Math.floor(Math.random() * 4)
+        let randomColor = colorArray[randomNum]
+        let randColorButton = document.querySelector(`.${randomColor}`)
+        btnFlash(randColorButton,randomColor)
+    }
+    
+    function btnFlash(btn,color){
+        btn.classList.add('flash')
+        setTimeout(function(){
+            btn.classList.remove('flash')
+        },25)   
+        gameSeq.push(color) 
+        console.log(gameSeq);
+        
+        
+    }
+    function checkGame(ind){
+        console.log('gameind ind Value',gameSeq[ind]);
+        console.log('userind ind Value',userSeq[ind]);
+        
+        if (gameSeq[ind] === userSeq[ind]) {
+            if (gameSeq.length === userSeq.length) {
+                setTimeout(levelUP,1000)    
+            }
+        } else{
+            h3.innerHTML = `Game Over Your <b> <u>Score ${level}</u></b>`
+            reset()
+            console.log(gameSeq);
+            console.log(userSeq);
+            console.log(level);
+            console.log(start);
+            
+            
+            
+            
+        }
+    }
+    
+    function userFlash(){
+        let btn = this
+        btn.classList.add('flash')
+        setTimeout(function(){
+            btn.classList.remove('flash')
+        },25) 
+        let Colorbtn = btn.getAttribute('id')   
+        userSeq.push(Colorbtn)
+        console.log('Gameseq',gameSeq);
+        console.log('Userseq',userSeq);
+        checkGame(userSeq.length -1)
+        
+        
+        
+    }
+
+    for (const ele of alld) {
+        ele.addEventListener('click',userFlash)
+    }
+
+
+
+
+
+
+
+
+
+</script>
+</html></body>
 </html>
